@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { StorageMode, Task } from '@/types';
 import { useAuth } from '@/hooks/use-auth';
 import { useTasks } from '@/hooks/use-tasks';
@@ -12,6 +12,7 @@ import { TaskDetailDialog } from './task-detail-dialog';
 import { AuthForm } from './auth-form';
 import { TaskCharts } from './task-charts';
 import { Card, CardContent } from './ui/card';
+import { BreadcrumbItem } from './app-breadcrumbs';
 
 export function TaskManager() {
   const [storageMode, setStorageMode] = useState<StorageMode>('local');
@@ -94,6 +95,12 @@ export function TaskManager() {
 
   const completedCount = tasks.filter((t) => t.completed).length;
 
+  // Compute breadcrumbs based on current view
+  const breadcrumbs: BreadcrumbItem[] = useMemo(() => {
+    const items: BreadcrumbItem[] = [{ label: 'Tasks' }];
+    return items;
+  }, []);
+
   if (showAuth && storageMode === 'supabase') {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-background">
@@ -112,6 +119,7 @@ export function TaskManager() {
           onSignOut={handleSignOut}
           taskCount={tasks.length}
           completedCount={completedCount}
+          breadcrumbs={breadcrumbs}
         />
 
         <Card>
