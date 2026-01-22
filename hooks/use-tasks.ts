@@ -72,6 +72,8 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
         completed: item.completed || false,
         description: item.description || '',
         deadline: item.deadline || null,
+        createdAt: item.created_at || null,
+        completedAt: item.completed_at || null,
       }));
 
       setTasks(mappedTasks);
@@ -96,12 +98,15 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
 
   // Add a new task
   const addTask = useCallback(async (text: string) => {
+    const now = new Date().toISOString();
     const newTask: Task = {
       id: Date.now(),
       text,
       completed: false,
       description: '',
       deadline: null,
+      createdAt: now,
+      completedAt: null,
     };
 
     if (storageMode === 'local') {
@@ -175,6 +180,7 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
         if (updates.completed !== undefined) updateData.completed = updates.completed;
         if (updates.description !== undefined) updateData.description = updates.description;
         if (updates.deadline !== undefined) updateData.deadline = updates.deadline;
+        if (updates.completedAt !== undefined) updateData.completed_at = updates.completedAt;
 
         const { error: updateError } = await supabase
           .from('todos')
@@ -193,7 +199,9 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
   const toggleComplete = useCallback(async (id: string | number) => {
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
-    await updateTask(id, { completed: !task.completed });
+    const newCompleted = !task.completed;
+    const completedAt = newCompleted ? new Date().toISOString() : null;
+    await updateTask(id, { completed: newCompleted, completedAt });
   }, [tasks, updateTask]);
 
   // Delete a task

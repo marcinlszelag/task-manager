@@ -4,6 +4,8 @@ export interface Task {
   completed: boolean;
   description: string;
   deadline: string | null;
+  createdAt?: string;
+  completedAt?: string | null;
   notionId?: string;
   url?: string;
 }

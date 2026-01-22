@@ -10,6 +10,7 @@ import { TaskForm } from './task-form';
 import { TaskList } from './task-list';
 import { TaskDetailDialog } from './task-detail-dialog';
 import { AuthForm } from './auth-form';
+import { TaskCharts } from './task-charts';
 import { Card, CardContent } from './ui/card';
 
 export function TaskManager() {
@@ -103,7 +104,7 @@ export function TaskManager() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container max-w-2xl mx-auto p-4 space-y-6">
+      <div className="container max-w-4xl mx-auto p-4 space-y-6">
         <Header
           storageMode={storageMode}
           onStorageModeChange={handleStorageModeChange}
@@ -125,6 +126,8 @@ export function TaskManager() {
             />
           </CardContent>
         </Card>
+
+        <TaskCharts tasks={tasks} />
 
         <TaskDetailDialog
           task={selectedTask || null}
