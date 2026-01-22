@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getTasks, createTask, isNotionConfigured } from '@/lib/notion';
 
-export async function GET() {
+export async function GET(request: Request) {
   if (!isNotionConfigured()) {
     return NextResponse.json(
       { success: false, error: 'Notion is not configured' },
@@ -10,7 +10,10 @@ export async function GET() {
   }
 
   try {
-    const tasks = await getTasks();
+    // Get user email from header for filtering
+    const userEmail = request.headers.get('x-user-email') || undefined;
+
+    const tasks = await getTasks(userEmail);
     return NextResponse.json({ success: true, tasks });
   } catch (error) {
     console.error('Error fetching tasks from Notion:', error);
@@ -30,8 +33,11 @@ export async function POST(request: Request) {
   }
 
   try {
+    // Get user email from header
+    const userEmail = request.headers.get('x-user-email') || undefined;
+
     const body = await request.json();
-    const task = await createTask(body);
+    const task = await createTask(body, userEmail);
     return NextResponse.json({ success: true, task });
   } catch (error) {
     console.error('Error creating task in Notion:', error);

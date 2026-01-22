@@ -38,6 +38,7 @@ interface NotionPage {
     Date?: { date?: { start: string } };
     Description?: { rich_text: Array<{ plain_text: string }> };
     Notes?: { rich_text: Array<{ plain_text: string }> };
+    User?: { rich_text: Array<{ plain_text: string }> };
   };
 }
 
@@ -90,8 +91,8 @@ export function notionPageToTask(page: NotionPage): Task {
   };
 }
 
-export async function getTasks(): Promise<Task[]> {
-  const response = await notion.databases.query({
+export async function getTasks(userEmail?: string): Promise<Task[]> {
+  const queryParams: Parameters<typeof notion.databases.query>[0] = {
     database_id: databaseId,
     sorts: [
       {
@@ -99,12 +100,24 @@ export async function getTasks(): Promise<Task[]> {
         direction: 'descending',
       },
     ],
-  });
+  };
+
+  // Filter by user email if provided
+  if (userEmail) {
+    queryParams.filter = {
+      property: 'User',
+      rich_text: {
+        equals: userEmail,
+      },
+    };
+  }
+
+  const response = await notion.databases.query(queryParams);
 
   return response.results.map((page) => notionPageToTask(page as unknown as NotionPage));
 }
 
-export async function createTask(task: Partial<Task>): Promise<Task> {
+export async function createTask(task: Partial<Task>, userEmail?: string): Promise<Task> {
   const properties: Record<string, unknown> = {
     Name: {
       title: [
@@ -140,6 +153,19 @@ export async function createTask(task: Partial<Task>): Promise<Task> {
       date: {
         start: task.deadline,
       },
+    };
+  }
+
+  // Add user email for filtering
+  if (userEmail) {
+    properties.User = {
+      rich_text: [
+        {
+          text: {
+            content: userEmail,
+          },
+        },
+      ],
     };
   }
 

@@ -29,8 +29,9 @@ export function TaskManager() {
   const selectedTask = selectedTaskId ? getTask(selectedTaskId) : null;
 
   const handleStorageModeChange = async (mode: StorageMode) => {
-    if (mode === 'supabase') {
-      if (!isSupabaseConfigured()) {
+    // Both Supabase and Notion modes require authentication
+    if (mode === 'supabase' || mode === 'notion') {
+      if (mode === 'supabase' && !isSupabaseConfigured()) {
         alert('Supabase is not configured. Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your environment variables.');
         return;
       }
@@ -79,9 +80,9 @@ export function TaskManager() {
     deleteTask(id);
   };
 
-  // Check auth on mount for supabase mode
+  // Check auth on mount for supabase and notion modes
   useEffect(() => {
-    if (storageMode === 'supabase' && !authLoading && !user) {
+    if ((storageMode === 'supabase' || storageMode === 'notion') && !authLoading && !user) {
       setShowAuth(true);
     }
   }, [storageMode, authLoading, user]);
@@ -101,7 +102,7 @@ export function TaskManager() {
     return items;
   }, []);
 
-  if (showAuth && storageMode === 'supabase') {
+  if (showAuth && (storageMode === 'supabase' || storageMode === 'notion')) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-background">
         <AuthForm onSignIn={handleSignIn} onSignUp={handleSignUp} onSkip={handleSkipAuth} />

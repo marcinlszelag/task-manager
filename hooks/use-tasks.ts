@@ -33,10 +33,16 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
 
   // Load tasks from Notion
   const loadNotionTasks = useCallback(async () => {
+    if (!user?.email) return;
+
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/tasks');
+      const response = await fetch('/api/tasks', {
+        headers: {
+          'x-user-email': user.email,
+        },
+      });
       const data = await response.json();
       if (data.success) {
         setTasks(data.tasks);
@@ -49,7 +55,7 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user?.email]);
 
   // Load tasks from Supabase
   const loadSupabaseTasks = useCallback(async () => {
@@ -113,11 +119,14 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
       const newTasks = [newTask, ...tasks];
       setTasks(newTasks);
       saveLocalTasks(newTasks);
-    } else if (storageMode === 'notion') {
+    } else if (storageMode === 'notion' && user?.email) {
       try {
         const response = await fetch('/api/tasks', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-email': user.email,
+          },
           body: JSON.stringify({ text, completed: false, description: '', deadline: null }),
         });
         const data = await response.json();
@@ -147,7 +156,7 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
         setError(err instanceof Error ? err.message : 'Failed to add task');
       }
     }
-  }, [storageMode, tasks, saveLocalTasks, loadNotionTasks, loadSupabaseTasks, supabase, user]);
+  }, [storageMode, tasks, saveLocalTasks, loadNotionTasks, loadSupabaseTasks, supabase, user?.email, user?.id]);
 
   // Update a task
   const updateTask = useCallback(async (id: string | number, updates: Partial<Task>) => {
@@ -157,11 +166,14 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
       );
       setTasks(newTasks);
       saveLocalTasks(newTasks);
-    } else if (storageMode === 'notion') {
+    } else if (storageMode === 'notion' && user?.email) {
       try {
         const response = await fetch(`/api/tasks/${id}`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-email': user.email,
+          },
           body: JSON.stringify(updates),
         });
         const data = await response.json();
@@ -210,10 +222,13 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
       const newTasks = tasks.filter((t) => t.id !== id);
       setTasks(newTasks);
       saveLocalTasks(newTasks);
-    } else if (storageMode === 'notion') {
+    } else if (storageMode === 'notion' && user?.email) {
       try {
         const response = await fetch(`/api/tasks/${id}`, {
           method: 'DELETE',
+          headers: {
+            'x-user-email': user.email,
+          },
         });
         const data = await response.json();
         if (data.success) {
@@ -246,7 +261,8 @@ export function useTasks(storageMode: StorageMode, user: User | null) {
 
   // Load tasks when storage mode or user changes
   useEffect(() => {
-    if (storageMode === 'supabase' && !user) {
+    // Both Supabase and Notion require authentication
+    if ((storageMode === 'supabase' || storageMode === 'notion') && !user) {
       setTasks([]);
       return;
     }
