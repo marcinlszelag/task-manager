@@ -9,10 +9,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 interface AuthFormProps {
   onSignIn: (email: string, password: string) => Promise<void>;
   onSignUp: (email: string, password: string) => Promise<void>;
-  onSkip: () => void;
 }
 
-export function AuthForm({ onSignIn, onSignUp, onSkip }: AuthFormProps) {
+export function AuthForm({ onSignIn, onSignUp }: AuthFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -123,14 +122,6 @@ export function AuthForm({ onSignIn, onSignUp, onSkip }: AuthFormProps) {
             Sign Up
           </Button>
         </div>
-
-        <Button
-          onClick={onSkip}
-          variant="ghost"
-          className="w-full"
-        >
-          Skip (Use Local Storage)
-        </Button>
       </CardContent>
     </Card>
   );

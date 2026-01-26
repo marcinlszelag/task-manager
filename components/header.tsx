@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { StorageModeSelect } from './storage-mode-select';
 import { Logo } from './logo';
 import { AppBreadcrumbs, BreadcrumbItem } from './app-breadcrumbs';
+import { ThemeToggle } from './theme-toggle';
 import { StorageMode } from '@/types';
 import { User } from '@supabase/supabase-js';
 
@@ -33,7 +34,7 @@ export function Header({
       <div className="flex items-center justify-between">
         <Logo size="md" />
         <div className="flex items-center gap-2">
-          {user && storageMode === 'supabase' && (
+          {user && (
             <>
               <span className="text-sm text-muted-foreground hidden sm:inline">{user.email}</span>
               <Button variant="outline" size="sm" onClick={onSignOut}>
@@ -41,6 +42,7 @@ export function Header({
               </Button>
             </>
           )}
+          <ThemeToggle />
           <StorageModeSelect value={storageMode} onChange={onStorageModeChange} />
         </div>
       </div>
