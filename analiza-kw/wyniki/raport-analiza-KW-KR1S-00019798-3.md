@@ -91,6 +91,27 @@ Wszystkie poniższe są **aktualne** (niewykreślone). **Kluczowe:** obciążaj�
 
 ---
 
+## 4c. Służebności mediowe (przyłącza: prąd, woda, gaz, kanalizacja, internet)
+
+Wszystkie media biegną **korytarzem wewnętrznych działek drogowych** (775/44, 45, 46, 54, 60, 63, 64, 69, 71) i są ustanowione **na rzecz innych działek**. **Twoje 6 działek nie ma służebności doprowadzenia mediów.**
+
+| Wpis | Prąd | Woda | Gaz | Kanalizacja | Internet/telekom. | Korytarz (działki nośne) | Na rzecz |
+|---|---|---|---|---|---|---|---|
+| 4 (21) | ✓ | ✓ | ✓ | ✓ | ✗ | 775/46,51,50,56,45,60,54; kanalizacja po 775/64,63,44 | 775/53,58,59,66 |
+| 5 (22) | ✓ | ✓ | ✓ | — | ✗ | 775/64,71,69,68,52 (+38,57,56,50,45,51,54,60) — pas 1,5 m | 775/53,58,59,66 |
+| 6 (25) | ✓ | ✓ | ✓ | ✓ | ✗ | 775/46,51,50,56,45,60,54; kanalizacja po 775/64,63,44 | 775/52 |
+| 7 (26) | ✓ | ✓ | ✓ | — | ✗ | 775/64,71,69,68 (+38,57,56,50,45,51,54,60) — pas 1,5 m | 775/52 |
+| 9 (31) | ✓ | ✓ | ✓ | ✓ | ✗ | 775/63,64,69,46,51,50,56,45,60,54,44 | 775/67,68 |
+| 10 (40) | ✓ | ✓ | ✓ | ✓ | ~ „wszelkie media” | 775/45,46,54,60 | dz. 1084 |
+
+- **Internet/światłowód nie jest wprost wymieniony** w żadnym wpisie; jedynie „wszelkie media" (wpis 10) mogłoby go objąć.
+- **Klauzula kosztowa (wpisy 4 i 6):** zakładający kanalizację odtwarza nawierzchnię drogi na własny koszt w 2 miesiące.
+- **Brak służebności przesyłu** na rzecz gestorów (energetyka, gazownia, wodociągi, telekom) — wszystkie wpisy to służebności gruntowe między właścicielami działek. Potwierdź u gestorów brak nieujawnionych sieci.
+
+➡️ Przy zakupie ustanów służebność mediów obejmującą **prąd, wodę, gaz, kanalizację ORAZ telekomunikację/światłowód**.
+
+> Schematy graficzne (drzewo podziałów + mapa korytarza mediowego) znajdują się w wersji HTML raportu.
+
 ## 5. Roszczenie wykreślone — ważny kontekst rodzinny
 
 Dział III, wpis nr 8 (indeks wpisu 28, **wykreślony** indeksem 39):
